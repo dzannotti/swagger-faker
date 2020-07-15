@@ -12,7 +12,6 @@
     "esModuleInterop": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "rootDir": "src",
     "resolveJsonModule": true,
     "paths": {
       "*": ["*", "__types__/*"]

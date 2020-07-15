@@ -1,7 +1,7 @@
 import { mapValues, isArray, map, get, forEach, mapKeys, find, pick } from 'lodash';
 import { PathResolver } from '@ts-tool/ts-codegen';
 import { __assign } from 'tslib';
-import { random, system } from 'faker';
+import { random, date, internet, system } from 'faker';
 
 var getRandomArrayItem = function (items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -20,6 +20,27 @@ var numberGenerator = function (max, min) {
 };
 var fileGenerator = function () {
   return system.mimeType();
+};
+var dateTimeGenerator = function () {
+  return date.past().toISOString();
+};
+var dateGenerator = function () {
+  return dateTimeGenerator().slice(0, 10);
+};
+var timeGenerator = function () {
+  return dateTimeGenerator().slice(11);
+};
+var urlGenerator = function () {
+  return internet.url();
+};
+var ipv4Generator = function () {
+  return internet.ip();
+};
+var ipv6Generator = function () {
+  return internet.ipv6();
+};
+var emailGenerator = function () {
+  return internet.email();
 };
 
 var pickRefKey = function (str) {
@@ -219,6 +240,22 @@ var toFakeProp = function (schema) {
       return booleanGenerator();
 
     case "string":
+      if (schema.format === "date") {
+        return dateGenerator();
+      } else if (schema.format === "time") {
+        return timeGenerator();
+      } else if (schema.format === "date-time") {
+        return dateTimeGenerator();
+      } else if (schema.format === "uri") {
+        return urlGenerator();
+      } else if (schema.format === "ipv4") {
+        return ipv4Generator();
+      } else if (schema.format === "ipv6") {
+        return ipv6Generator();
+      } else if (schema.format === "email") {
+        return emailGenerator();
+      }
+
       return stringGenerator(schema.enum);
 
     case "number":
